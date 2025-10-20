@@ -1,4 +1,4 @@
--- phpMyAdmin SQL Dump
+9-- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
@@ -40,7 +40,7 @@ CREATE TABLE `attendance` (
 --
 
 INSERT INTO `attendance` (`id`, `student_name`, `student_number`, `sign_in_time`, `status`) VALUES
-(1, 'Geoffrey Sankandi', '222034726', '2025-10-19 23:22:05', 'Late');
+(1, 'Geoffrey Sankandi', '222034726', '2025-10-19 23:22:00', 'Late');
 
 --
 -- Indexes for dumped tables
