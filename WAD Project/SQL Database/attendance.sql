@@ -40,7 +40,7 @@ CREATE TABLE `attendance` (
 --
 
 INSERT INTO `attendance` (`id`, `student_name`, `student_number`, `sign_in_time`, `status`) VALUES
-(1, 'Geoffrey Sankandi', '222034726', '2025-10-19 23:22:00', 'Late');
+(1, 'Geoffrey Sankandi', '222034726', '2025-10-19 23:22:05', 'Late');
 
 --
 -- Indexes for dumped tables
