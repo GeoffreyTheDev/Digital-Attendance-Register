@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Attendance Register</title>
+  <style>
+    /* ===== General Page Style ===== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #e1bee7, #bbdefb, #f8bbd0);
+    }
+
+    /* ===== Form Container ===== */
+    .container {
+      background: #fff;
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      width: 360px;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .container:hover {
+      transform: translateY(-5px);
+    }
+
+    h2 {
+      margin-bottom: 25px;
+      color: #4a148c;
+      font-weight: 600;
+    }
+
+    /* ===== Input Styles ===== */
+    label {
+      display: block;
+      text-align: left;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 15px;
+      transition: border 0.3s;
+    }
+
+    input[type="text"]:focus {
+      border-color: #7b1fa2;
+      outline: none;
+    }
+
+    /* ===== Button ===== */
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #7b1fa2;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #4a148c;
+    }
+
+    /* ===== Message Box ===== */
+    .message {
+      margin-top: 15px;
+      font-weight: bold;
+      min-height: 24px;
+    }
+
+    .success {
+      color: green;
+    }
+
+    .error {
+      color: red;
+    }
+
+    /* ===== Footer Link ===== */
+    .admin-link {
+      margin-top: 20px;
+      display: block;
+      text-decoration: none;
+      color: #512da8;
+      font-weight: bold;
+    }
+
+    .admin-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Digital Attendance Register</h2>
+
+    <form id="attendanceForm" onsubmit="return handleSignIn(event)">
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" placeholder="Enter full name" required />
+
+      <label for="student_number">Student Number:</label>
+      <input type="text" id="student_number" placeholder="Enter student number" required pattern="[0-9]{9}" title="Enter a valid 9-digit student number" />
+
+      <button type="submit">Sign In</button>
+    </form>
+
+    <div class="message" id="message"></div>
+
+    <a href="#" class="admin-link">👩‍🏫 View Attendance Dashboard</a>
+  </div>
+
+  <script>
+    // ===== Simulated Sign-In Handling (Front-End Only) =====
+    function handleSignIn(event) {
+      event.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const number = document.getElementById("student_number").value.trim();
+      const msg = document.getElementById("message");
+
+      // Simple front-end validation
+      if (name === "" || number === "") {
+        msg.textContent = "Please fill in all required fields.";
+        msg.className = "message error";
+        return false;
+      }
+
+      // Get current time
+      const now = new Date();
+      const hour = now.getHours();
+      const minute = now.getMinutes().toString().padStart(2, "0");
+      const time = `${hour}:${minute}`;
+
+      // Determine status
+      const status = hour >= 8 ? "Late" : "On Time";
+
+      // Store in localStorage (temporary, front-end only)
+      const today = new Date().toLocaleDateString();
+      const recordKey = `${number}_${today}`;
+      if (localStorage.getItem(recordKey)) {
+        msg.textContent = "⚠️ You have already signed in today.";
+        msg.className = "message error";
+        return false;
+      }
+
+      localStorage.setItem(recordKey, JSON.stringify({ name, number, time, status }));
+
+      msg.textContent = `✅ Attendance recorded successfully! (${status} at ${time})`;
+      msg.className = "message success";
+
+      // Reset form
+      document.getElementById("attendanceForm").reset();
+      return false;
+    }
+  </script>
+</body>
+</html>
