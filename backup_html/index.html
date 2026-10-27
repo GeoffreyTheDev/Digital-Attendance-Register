@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Attendance Register</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 350px;
+    }
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    #signInBtn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #signInBtn:hover {
+      background-color: #0056b3;
+    }
+    .message {
+      text-align: center;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Digital Attendance Register</h2>
+    <form id="attendanceForm" action="submit_attendance.php" method="POST" onsubmit="return validateForm()">
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" name="student_name" placeholder="Enter full name" required>
+
+      <label for="student_number">Student Number:</label>
+      <input type="text" id="student_number" name="student_number" placeholder="Enter student number" required>
+
+      <!-- Hidden field to hold sign-in time -->
+      <input type="hidden" id="sign_in_time" name="sign_in_time">
+      <input type="hidden" id="status" name="status">
+
+      <button type="submit" id="signInBtn">Sign In</button>
+    </form>
+
+    <div class="message" id="message"></div>
+  </div>
+
+  <script>
+    // Capture current time and determine status before form submission
+    function validateForm() {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+
+      // Convert time to a readable string for MySQL
+      const formattedTime = now.getFullYear() + "-" + 
+        String(now.getMonth()+1).padStart(2,'0') + "-" + 
+        String(now.getDate()).padStart(2,'0') + " " + 
+        String(hours).padStart(2,'0') + ":" + 
+        String(minutes).padStart(2,'0') + ":00";
+
+      document.getElementById('sign_in_time').value = formattedTime;
+
+      // Example: Late if after 08:00 AM
+      const lateHour = 8;
+      const status = (hours >= lateHour) ? "Late" : "On Time";
+      document.getElementById('status').value = status;
+
+      // Optional highlight effect
+      const msg = document.getElementById('message');
+      msg.textContent = (status === "Late") ? "You are late!" : "Sign-in successful!";
+      msg.style.color = (status === "Late") ? "red" : "green";
+
+      // Continue submitting to PHP
+      return true;
+    }
+  </script>
+</body>
+</html>
